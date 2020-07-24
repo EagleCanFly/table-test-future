@@ -1,7 +1,10 @@
 import {API} from "../DAL/api";
 
 const SET_DATA = 'SET_DATA',
-    SORT_COLUMN = 'SORT_COLUMN'
+    SORT_COLUMN = 'SORT_COLUMN',
+    SEND_ROW_TO_BOTTOM = 'SEND_ROW_TO_BOTTOM',
+    FILTER_USERS = 'FILTER_USERS',
+    TOGGLE_ADD_MODE = 'TOGGLE_ADD_MODE'
 
 const initialState = {
     data: [
@@ -21,7 +24,9 @@ const initialState = {
         }
 
     ],
-    sortOrder: null
+    sortOrder: null,
+    bottomRow: [],
+    isAddLineActive: true
 }
 
 const reducer = (state = initialState, action) => {
@@ -33,7 +38,6 @@ const reducer = (state = initialState, action) => {
             }
         }
         case SORT_COLUMN: {
-            debugger
             if (action.sortOrder === 'toTop') {
                 action.param === "id" || action.param === "phone"
                     ? state.data.sort((a, b) => b[action.param] - a[action.param])
@@ -63,6 +67,25 @@ const reducer = (state = initialState, action) => {
                 sortOrder: action.sortOrder
             }
         }
+        case SEND_ROW_TO_BOTTOM: {
+            return {
+                ...state,
+                bottomRow: [...state.bottomRow, action.payload]
+            }
+        }
+        case FILTER_USERS: {
+            debugger
+            return  {
+                ...state,
+                data: [...state.data.filter((item, i) => item.id.includes(action.value))]
+            }
+        }
+        case TOGGLE_ADD_MODE: {
+            return {
+                ...state,
+                isAddLineActive: action.value
+            }
+        }
         default: {
             return state
         }
@@ -82,7 +105,24 @@ export const sortColumn = (param, sortOrder) => {
         sortOrder
     }
 }
-
+export const sendRowToBottom = (payload) => {
+    return {
+        type: SEND_ROW_TO_BOTTOM,
+        payload
+    }
+}
+export const filterUsers = (value) => {
+    return {
+        type: FILTER_USERS,
+        value
+    }
+}
+export const toggleAddMode = (value) => {
+    return {
+        type: TOGGLE_ADD_MODE,
+        value
+    }
+}
 export default reducer;
 
 export const getData = (amount) => {

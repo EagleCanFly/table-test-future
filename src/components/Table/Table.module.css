@@ -4,10 +4,14 @@
     width: 100%;
     table-layout: fixed;
 }
+.table tr > td:first-child:hover {
+    background: #daa520;
+}
 .pagination {
     list-style: none;
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 0;
 }
 .pagination li a{
@@ -16,4 +20,35 @@
 }
 .active {
     font-size: 20px;
+}
+.bottomLine {
+    display: flex;
+}
+.bottomLine span {
+    padding: 10px;
+}
+.topControl{
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    height: 250px;
+}
+.addBtn {
+    padding: 5px;
+    height: 11%;
+    width: 185px;
+    align-self: center;
+}
+.filter {
+    height: 10%;
+    align-self: center;
+    padding: 5px;
+}
+.inputColumn {
+    display: flex;
+    flex-direction: column;
+}
+.inputColumn > input {
+    padding: 5px;
+    margin: 5px 0;
 }
