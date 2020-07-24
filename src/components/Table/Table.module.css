@@ -1,0 +1,19 @@
+.table {
+    background: #eaeaea;
+    border: 1px solid #282c34;
+    width: 100%;
+    table-layout: fixed;
+}
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+.pagination li a{
+    padding: 0 10px;
+    color: #282c34;
+}
+.active {
+    font-size: 20px;
+}
