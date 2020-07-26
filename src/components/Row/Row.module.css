@@ -1,7 +1,11 @@
-.row td {
+.row .data td {
     border: 1px solid #282c34;
     width: 100%;
 }
-.noHover:hover {
-    background: #eaeaea !important;
+.data:hover {
+    background: gold;
+}
+.data td:first-child:hover {
+    background: #61dafb;
+    cursor: pointer;
 }

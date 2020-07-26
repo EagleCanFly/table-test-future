@@ -6,4 +6,9 @@
     max-width: 960px;
     padding: 0 15px;
     margin: 0 auto;
+    min-height: 100vh;
+    background: #F3F7FA;
+}
+button {
+    cursor: pointer;
 }

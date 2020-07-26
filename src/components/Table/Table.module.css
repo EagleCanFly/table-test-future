@@ -1,11 +1,12 @@
 .table {
-    background: #eaeaea;
+    background: #F3F7FA;
     border: 1px solid #282c34;
     width: 100%;
     table-layout: fixed;
+    margin-bottom: 10%;
 }
-.table tr > td:first-child:hover {
-    background: #daa520;
+.table tr > td {
+    background: #FFFFFF;
 }
 .pagination {
     list-style: none;
@@ -23,6 +24,7 @@
 }
 .bottomLine {
     display: flex;
+    padding-bottom: 10%;
 }
 .bottomLine span {
     padding: 10px;
@@ -51,4 +53,19 @@
 .inputColumn > input {
     padding: 5px;
     margin: 5px 0;
+}
+.buttonsRow {
+    padding: 10px;
+}
+.buttonsRow > button {
+    padding: 10px;
+    margin: 0 5px;
+}
+.topRow {
+    border: 1px solid #282c34;
+    width: 100%;
+}
+.topRow td:hover {
+    background: #a3F7fA;
+    cursor: pointer;
 }
