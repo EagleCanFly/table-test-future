@@ -3,15 +3,16 @@ import Table from "./Table";
 import {connect} from "react-redux";
 import {
     addLine,
-    filterUsers,
     getData,
-    removeRowFromBottom, sendDataToBottomDataLines,
+    removeRowFromBottom,
+    sendDataToBottomDataLines,
     sendRowToBottom,
     sortColumn,
-    toggleAddMode
+    toggleAddMode, toggleFormEmptyError
 } from "../../BLL/reducer";
 
-const TableContainer = ({data,
+const TableContainer = ({
+                            data,
                             getData,
                             sortColumn,
                             sortOrder,
@@ -20,11 +21,14 @@ const TableContainer = ({data,
                             sendRowToBottom,
                             sendDataToBottomDataLines,
                             removeRowFromBottom,
-                            filterUsers,
                             isAddLineActive,
                             toggleAddMode,
                             addLine,
-                            isFetching}) => {
+                            isFetching,
+                            isError,
+                            isFormEmptyError,
+                            toggleFormEmptyError
+                        }) => {
 
     const [currentPage, setCurrentPage] = useState(1)
 
@@ -33,29 +37,25 @@ const TableContainer = ({data,
     }
     const isEmpty = (obj) => {
         for (let key in obj) {
-            if (obj.hasOwnProperty(key))
-                return false;
+            if (obj[key] === "") {
+                toggleFormEmptyError(true)
+                return true;}
         }
-        return true;
+        toggleFormEmptyError(false)
+        return false;
     }
-    const onAddLineSubmit = (params) => {
-
+    const onAddLineSubmit = (event) => {
+        const params = {}
+        for (let i = 0; i < 5; i++) {
+            params[event.target[i].name] = event.target[i].value
+        }
         if (isEmpty(params)) return;
         addLine(params);
         toggleAddMode(false)
     }
-    const onIdSearch =  (event) => {
-         if (event.key === 'Enter') {
-             if (event.target.value === '') {
-                 getData('small')
-             }
-
-            filterUsers(event.target.value)
-         }
-    }
 
     const toSort = (sortOrder, param) => {
-        return   sortOrder === 'toTop'
+        return sortOrder === 'toTop'
             ? () => sortColumn(param, 'toBottom')
             : () => sortColumn(param, 'toTop')
     }
@@ -72,12 +72,12 @@ const TableContainer = ({data,
                   sendDataToBottomDataLines={sendDataToBottomDataLines}
                   bottomRow={bottomRow}
                   bottomDataLines={bottomDataLines}
-                  filterUsers={filterUsers}
                   isAddLineActive={isAddLineActive}
                   onAddLineSubmit={onAddLineSubmit}
                   toggleAddMode={toggleAddMode}
                   isFetching={isFetching}
-                  onIdSearch={onIdSearch}
+                  isError={isError}
+                  isFormEmptyError={isFormEmptyError}
                   toSort={toSort}
     />
 }
@@ -88,7 +88,9 @@ const mapDispatchToProps = (state) => {
         bottomRow: state.bottomRow,
         bottomDataLines: state.bottomDataLines,
         isAddLineActive: state.isAddLineActive,
-        isFetching: state.isFetching
+        isFetching: state.isFetching,
+        isError: state.isError,
+        isFormEmptyError: state.isFormEmptyError
     }
 }
 export default connect(mapDispatchToProps, {
@@ -97,7 +99,7 @@ export default connect(mapDispatchToProps, {
     sendRowToBottom,
     sendDataToBottomDataLines,
     removeRowFromBottom,
-    filterUsers,
     toggleAddMode,
-    addLine
+    addLine,
+    toggleFormEmptyError
 })(TableContainer);

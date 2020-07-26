@@ -7,6 +7,7 @@
 }
 .table tr > td {
     background: #FFFFFF;
+    overflow: hidden;
 }
 .pagination {
     list-style: none;
@@ -42,8 +43,13 @@
     align-self: center;
 }
 .filter {
-    height: 10%;
     align-self: center;
+}
+.filter input {
+    height: 10%;
+    padding: 5px;
+}
+.filter button {
     padding: 5px;
 }
 .inputColumn {
@@ -68,4 +74,10 @@
 .topRow td:hover {
     background: #a3F7fA;
     cursor: pointer;
+}
+.error {
+    color: red;
+}
+.disabled {
+    opacity: 0;
 }

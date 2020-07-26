@@ -5,10 +5,11 @@ const SET_DATA = 'SET_DATA',
     SEND_ROW_TO_BOTTOM = 'SEND_ROW_TO_BOTTOM',
     SEND_DATA_TO_BOTTOM_DATA_LINES = 'SEND_DATA_TO_BOTTOM_DATA_LINES',
     REMOVE_ROW_FROM_BOTTOM = 'REMOVE_ROW_FROM_BOTTOM',
-    FILTER_USERS = 'FILTER_USERS',
     TOGGLE_ADD_MODE = 'TOGGLE_ADD_MODE',
     ADD_LINE = 'ADD_LINE',
-    TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
+    TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING',
+    TOGGLE_IS_ERROR = 'TOGGLE_IS_ERROR',
+    TOGGLE_FORM_EMPTY_ERROR = 'TOGGLE_FORM_EMPTY_ERROR'
 
 const initialState = {
     data: [
@@ -32,7 +33,9 @@ const initialState = {
     bottomRow: [],
     bottomDataLines: [],
     isAddLineActive: false,
-    isFetching: false
+    isFetching: false,
+    isError: false,
+    isFormEmptyError: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -97,12 +100,6 @@ const reducer = (state = initialState, action) => {
                 bottomRow: []
             }
         }
-        case FILTER_USERS: {
-            return {
-                ...state,
-                data: [...state.data.filter((item, i) => item.id == action.value)]
-            }
-        }
         case TOGGLE_ADD_MODE: {
             return {
                 ...state,
@@ -113,6 +110,18 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: action.value
+            }
+        }
+        case TOGGLE_IS_ERROR: {
+            return {
+                ...state,
+                isError: action.value
+            }
+        }
+        case TOGGLE_FORM_EMPTY_ERROR: {
+            return {
+                ...state,
+                isFormEmptyError: action.value
             }
         }
         default: {
@@ -157,12 +166,6 @@ export const removeRowFromBottom = () => {
         type: REMOVE_ROW_FROM_BOTTOM
     }
 }
-export const filterUsers = (value) => {
-    return {
-        type: FILTER_USERS,
-        value
-    }
-}
 export const toggleAddMode = (value) => {
     return {
         type: TOGGLE_ADD_MODE,
@@ -175,22 +178,38 @@ export const toggleIsFetching = (value) => {
         value
     }
 }
+export const toggleIsError = (value) => {
+    return {
+        type: TOGGLE_IS_ERROR,
+        value
+    }
+}
+export const toggleFormEmptyError = (value) => {
+    return {
+        type: TOGGLE_FORM_EMPTY_ERROR,
+        value
+    }
+}
 export default reducer;
 
 export const getData = (amount) => {
     return async (dispatch) => {
-
-        if (amount === 'small') {
-            dispatch(toggleIsFetching(true))
-            const response = await API.getSmallAmount()
-            dispatch(setData(response.data))
+        try {
+            dispatch(toggleIsError(false))
+            if (amount === 'small') {
+                dispatch(toggleIsFetching(true))
+                const response = await API.getSmallAmount()
+                dispatch(setData(response.data))
+                dispatch(toggleIsFetching(false))
+            } else if (amount === 'large') {
+                dispatch(toggleIsFetching(true))
+                const response = await API.getBigAmount()
+                dispatch(setData(response.data))
+                dispatch(toggleIsFetching(false))
+            }
+        } catch (e) {
             dispatch(toggleIsFetching(false))
-        } else if (amount === 'large') {
-            dispatch(toggleIsFetching(true))
-            const response = await API.getBigAmount()
-            dispatch(setData(response.data))
-            dispatch(toggleIsFetching(false))
+            dispatch(toggleIsError(true))
         }
-
     }
 }
