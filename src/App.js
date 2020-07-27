@@ -8,7 +8,6 @@ function App() {
         <div className={s.app}>
             <div className={s.container}>
                 <TableContainer/>
-
             </div>
         </div>
     );

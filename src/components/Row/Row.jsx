@@ -8,7 +8,7 @@ const Row = ({id, firstName, lastName, email, phone, sendRowToBottom, sendDataTo
             removeRowFromBottom();
             sendRowToBottom({id, firstName, address, description});
             sendDataToBottomDataLines({id, firstName, lastName, email, phone})
-        }} /*onMouseOut={() => removeRowFromBottom()}*/>{id}</td>
+        }}>{id}</td>
         <td>{firstName}</td>
         <td>{lastName}</td>
         <td>{email}</td>

@@ -39,15 +39,19 @@ const Table = ({
             || item.email.toLowerCase().includes(searchValue.toLowerCase())
     })
 
-
+    const onFilterSubmit = (event) => {
+        event.preventDefault();
+        setSearchValue(event.target[0].value)
+    }
+    const onAddLineFormSubmit = (event) => {
+        event.preventDefault();
+        onAddLineSubmit(event)
+    }
     return (
         <div>
             <div className={s.topControl}>
                 {isAddLineActive
-                    ? <form onSubmit={event => {
-                        event.preventDefault();
-                        onAddLineSubmit(event)
-                    }}
+                    ? <form onSubmit={event => onAddLineFormSubmit(event)}
                             className={s.inputColumn}>
                         <input name={'id'} placeholder={'ID'} type={"text"}/>
                         <input name={'firstName'} placeholder={'Имя'} type={"text"}/>
@@ -58,18 +62,18 @@ const Table = ({
                         <div className={isFormEmptyError ? s.error : s.disabled}>Заполните все поля</div>
                     </form>
 
-                    : <button onClick={() => toggleAddMode(true)} className={s.addBtn}>Добавить</button>}
+                    : <button onClick={() => toggleAddMode(true)}
+                              className={s.addBtn}>Добавить</button>}
 
                 <form onSubmit={(event) => {
-                    event.preventDefault();
-                    setSearchValue(event.target[0].value)
-                }} className={s.filter}>
+                    onFilterSubmit(event)
+                }}
+                      className={s.filter}>
                     <input placeholder={'Поиск'}
                            type="text"
                            className={s.filter}
                     />
-                    <button>Найти
-                    </button>
+                    <button>Найти</button>
                 </form>
             </div>
 
